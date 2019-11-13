@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_curve, auc
 
 
 def extract_title(full_name):
@@ -30,12 +31,11 @@ def engineer_features(df):
     return df
 
 
-def main(training_data, test_data):
+def preprocess(training_data, test_data):
     # Combine training and test datasets to have more training data with valid age values
     train_df = pd.read_csv(training_data)
     test_df = pd.read_csv(test_data)
     combined_df = pd.concat([train_df, test_df])
-
     selected_features = ['PassengerId', 'Age', 'Deck', 'Room', 'Embarked', 'Fare', 'Title',
                          'Parch', 'Pclass', 'Sex', 'SibSp', 'Survived']
     # One-hot encode the engineered features
@@ -58,6 +58,25 @@ def main(training_data, test_data):
     # Fit Random Forest model to predict missing age
     age_rf = RandomForestRegressor(n_estimators=1000, random_state=42)
     age_rf.fit(not_null_age_df[features], not_null_age_df['Age'])
-    null_age_df.loc[:, 'Age'] = age_rf.predict(null_age_df[features])
+    null_age_df.loc[:, 'Predicted_Age'] = age_rf.predict(null_age_df[features])
+    not_null_age_df['Predicted_Age'] = not_null_age_df['Age'] 
 
-    return pd.concat([not_null_age_df, null_age_df], sort=False), features
+    # Combine data with predicted age
+    age_predicted_df = pd.concat([not_null_age_df, null_age_df], sort=False)
+    age_predicted_df = pd.merge(age_predicted_df, combined_df[['PassengerId', 'Name']],
+                                how='left', on=['PassengerId']) 
+    return age_predicted_df, features
+
+
+def evaluate(y_true, y_pred):
+    '''Evaluate performance of classification
+    '''
+    false_positive_rate, true_positive_rate, thresholds = roc_curve(y_true, y_pred)
+    roc_auc = auc(false_positive_rate, true_positive_rate)
+    accuracy = accuracy_score(y_true, y_pred)
+    precision = precision_score(y_true, y_pred, average='micro')
+    recall = recall_score(y_true, y_pred, average='micro')
+    print("Accuracy = ", round(accuracy, 6))
+    print("Precision = tp / (tp + fp), Precision = ", round(precision, 6))
+    print("Recall = tp / (tp + fn), Recall = ", round(recall, 6))
+    print("ROC = ", round(roc_auc, 6))
