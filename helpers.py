@@ -68,9 +68,10 @@ def preprocess(training_data, test_data):
     return age_predicted_df, features
 
 
-def evaluate(y_true, y_pred):
+def evaluate(model, features, y_true):
     '''Evaluate performance of classification
     '''
+    y_pred = model.predict(features)
     false_positive_rate, true_positive_rate, thresholds = roc_curve(y_true, y_pred)
     roc_auc = auc(false_positive_rate, true_positive_rate)
     accuracy = accuracy_score(y_true, y_pred)
