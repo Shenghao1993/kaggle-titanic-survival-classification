@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
+import time
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_curve, auc
+from sklearn.model_selection import RandomizedSearchCV, GridSearchCV
+from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_curve, auc, confusion_matrix
 
 
 def extract_title(full_name):
@@ -68,16 +70,52 @@ def preprocess(training_data, test_data):
     return age_predicted_df, features
 
 
+def select_params(model, param_grid, X_train, y_train, nfolds, grid_search=True):
+    # scores = ['accuracy', 'precision', 'recall']
+    scores = ['accuracy']
+    start_time = time.time()
+    for score in scores:
+        print("# Tuning hyper-parameters for %s" % score)
+        print()
+        if grid_search:
+            clf = GridSearchCV(model, param_grid, cv=nfolds, scoring='%s' % score)
+        else:
+            clf = RandomizedSearchCV(model, param_grid, cv=nfolds, scoring='%s' % score)
+        clf.fit(X_train, y_train)
+
+        print("Best parameters set found on development set:")
+        print()
+        print(clf.best_params_)
+        print()
+        print("Grid scores on development set:")
+        print()
+        means = clf.cv_results_['mean_test_score']
+        stds = clf.cv_results_['std_test_score']
+        for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+            print("%0.3f (+/-%0.03f) for %r"
+                  % (mean, std * 2, params))
+        print("Elapsed time: %s seconds" % round(time.time() - start_time, 4))
+        print()
+    return clf
+
+
 def evaluate(model, features, y_true):
     '''Evaluate performance of classification
     '''
     y_pred = model.predict(features)
+    conf = confusion_matrix(y_true, y_pred)
+    (tn, fp, fn, tp) = conf.ravel() 
     false_positive_rate, true_positive_rate, thresholds = roc_curve(y_true, y_pred)
     roc_auc = auc(false_positive_rate, true_positive_rate)
     accuracy = accuracy_score(y_true, y_pred)
-    precision = precision_score(y_true, y_pred, average='micro')
-    recall = recall_score(y_true, y_pred, average='micro')
-    print("Accuracy = ", round(accuracy, 6))
+    precision = precision_score(y_true, y_pred, average='binary')
+    recall = recall_score(y_true, y_pred, average='binary')
+    print(conf)
+    print("True positive: ", tp)
+    print("True negative: ", tn)
+    print("False positive: ", fp)
+    print("False negative: ", fn)
+    print("Accuracy = (tp + tn) / (p + n), Accuracy = ", round(accuracy, 6))
     print("Precision = tp / (tp + fp), Precision = ", round(precision, 6))
     print("Recall = tp / (tp + fn), Recall = ", round(recall, 6))
     print("ROC = ", round(roc_auc, 6))
