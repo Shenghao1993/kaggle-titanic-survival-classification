@@ -1,5 +1,15 @@
 Titanic - Passenger Survival Prediction
 
+# Install lightgbm on macOS system
+$ brew install cmake
+$ brew install gcc@7
+$ git clone --recursive https://github.com/Microsoft/LightGBM ; cd LightGBM
+$ mkdir build ; cd build
+$ cmake -DCMAKE_CXX_COMPILER=g++-7 -DCMAKE_C_COMPILER=gcc-7 ..
+$ make -j
+$ cp -r LightGBM/python-package/lightgbm python3.7/site-packages/
+$ cp LightGBM/lib_lightgbm.so python3.7/site-packages/lightgbm/ 
+
 # Features in use
 1. Pclass;
 2. Sex;
@@ -12,9 +22,11 @@ Titanic - Passenger Survival Prediction
 
 
 # Machine Learning models
-1. Random Forest.
-2. Catboost.
-3. Support Vector Machine: one-hot encoding for categorical variables is required.
+1. Logistic Regression;
+2. Random Forest;
+3. Support Vector Machine;
+4. XGBoost;
+5. LightGBM.
 
 
 # References
@@ -32,5 +44,14 @@ https://www.kaggle.com/viveksrinivasan/analyzing-titanic-dataset
 
 Titanic Cabin Features
 https://www.kaggle.com/ccastleberry/titanic-cabin-features
+
+Introduction to Ensembling/Stacking in Python
+https://www.kaggle.com/arthurtok/introduction-to-ensembling-stacking-in-python
+
+LightGBM hyperparameter optimisation (LB: 0.761)
+https://www.kaggle.com/mlisovyi/lightgbm-hyperparameter-optimisation-lb-0-761
+
+StackingClassifier
+http://rasbt.github.io/mlxtend/user_guide/classifier/StackingClassifier/
 
 Benchmark accuracy: 0.8
