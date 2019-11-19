@@ -54,4 +54,10 @@ https://www.kaggle.com/mlisovyi/lightgbm-hyperparameter-optimisation-lb-0-761
 StackingClassifier
 http://rasbt.github.io/mlxtend/user_guide/classifier/StackingClassifier/
 
+https://medium.com/all-things-ai/in-depth-parameter-tuning-for-random-forest-d67bb7e920d
+    
+https://towardsdatascience.com/hyperparameter-tuning-the-random-forest-in-python-using-scikit-learn-28d2aa77dd74
+
+https://medium.com/@praveen.orvakanti/this-will-help-you-score-95-percentile-in-the-kaggle-titanic-ml-competition-aa2b3fd1b79b
+
 Benchmark accuracy: 0.8
