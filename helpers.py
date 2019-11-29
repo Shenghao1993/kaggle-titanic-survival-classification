@@ -1,9 +1,9 @@
-import numpy as np
-import pandas as pd
 import re
 import time
+import numpy as np
+import pandas as pd
 from sklearn import preprocessing
-from sklearn.model_selection import RandomizedSearchCV, GridSearchCV
+from sklearn.model_selection import RandomizedSearchCV, GridSearchCV, StratifiedKFold
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_curve, auc, confusion_matrix
 
 
@@ -103,7 +103,7 @@ class Preprocessor:
         train_df = pd.read_csv(self.train_data_path)
         test_df = pd.read_csv(self.test_data_path)
         processed_dfs = []
-        drop_cols = ['PassengerId', 'NameLength', 'SibSp', 'Parch', 'Ticket',
+        drop_cols = ['NameLength', 'SibSp', 'Parch', 'Ticket',
                      'FamilySize', 'Cabin', 'Deck', 'Room']
         for df in [train_df, test_df]:
             # Fill in missing Fare value with the median of training set.
@@ -168,10 +168,12 @@ class ModelWorker:
             print()
             if grid_search:
                 clf = GridSearchCV(self.model, param_grid,
-                                   cv=nfolds, scoring='%s' % score)
+                                   cv=StratifiedKFold(n_splits=nfolds, random_state=106),
+                                   scoring='%s' % score)
             else:
                 clf = RandomizedSearchCV(self.model, param_grid,
-                                         cv=nfolds, scoring='%s' % score)
+                                         cv=StratifiedKFold(n_splits=nfolds, random_state=106),
+                                         scoring='%s' % score, random_state=106)
             clf.fit(X_train, y_train)
 
             print("Best parameters set found on development set:")
