@@ -1,5 +1,29 @@
 Titanic - Passenger Survival Prediction
 
+Project Organization
+------------
+
+    ├── README.md               <- The top-level README for developers using this project.
+    ├── input
+    │   ├── train.csv           <- Training dataset provided by Kaggle.
+    │   ├── test.csv            <- Test dataset provided by Kaggle.
+    │   └── ground-truth.csv    <- Ground truth dataset which contains actual label for both training and test data.
+    │
+    ├── 1.0-wsh-titanic-exploratory-data-analysis.ipynb
+    │                      <- Jupyter notebooks for exploratory study and feature engineering
+    │ 
+    ├── 2.0-wsh-titanic-modelling-and-evaluation.ipynb
+    │                      <- Jupyter notebooks for model training and parameter tuning
+    │
+    ├── requirements.txt        <- The requirements file for reproducing the analysis environment, e.g.
+    │                              generated with `pip freeze > requirements.txt`
+    │
+    ├── helps.py                <- Helper script for data preprocessing and parameter tuning
+    │ 
+    └── submission.csv          <- Prediction of labels for test data submitted to Kaggle.
+
+--------
+
 # Install lightgbm on macOS system
 $ brew install cmake<br/>
 $ brew install gcc@7<br/>
@@ -13,51 +37,19 @@ $ cp LightGBM/lib_lightgbm.so python3.7/site-packages/lightgbm/<br/>
 # Features in use
 1. Pclass;
 2. Sex;
-3. Age: fit a Random Forest model to fill in the 177 missing values in the training data;
+3. Age: fill in missing values with random age generated based on the mean and standard deviation;
 4. Number of family members onboard: sum of SibSp and Parch;
 5. Fare;
 6. Embarked: assign the most popular port S to the 2 missing values;
-7. Passenger title: Mrs, Miss, Master, Mr, the rest titles;
-8. Cabin: 
-
+7. Length of passenger name;
+8. Passenger title: Mrs, Miss, Master, Mr, the rest titles;
+9. Cabin: whether the passenger has a cabin.
 
 # Machine Learning models
 1. Logistic Regression;
-2. Random Forest;
-3. Support Vector Machine;
-4. XGBoost;
-5. LightGBM.
-
-
-# References
-Exploratory Data Analysis on the Titanic Dataset by Asela
-https://www.kaggle.com/aselad/exploratory-data-analysis-on-the-titanic-dataset
-
-5 Ways To Handle Missing Values In Machine Learning Datasets
-https://www.analyticsindiamag.com/5-ways-handle-missing-values-machine-learning-datasets/
-
-Finding Important Factors To Survive Titanic
-https://www.kaggle.com/jatturat/finding-important-factors-to-survive-titanic
-
-Analyzing Titanic Dataset
-https://www.kaggle.com/viveksrinivasan/analyzing-titanic-dataset
-
-Titanic Cabin Features
-https://www.kaggle.com/ccastleberry/titanic-cabin-features
-
-Introduction to Ensembling/Stacking in Python
-https://www.kaggle.com/arthurtok/introduction-to-ensembling-stacking-in-python
-
-LightGBM hyperparameter optimisation (LB: 0.761)
-https://www.kaggle.com/mlisovyi/lightgbm-hyperparameter-optimisation-lb-0-761
-
-StackingClassifier
-http://rasbt.github.io/mlxtend/user_guide/classifier/StackingClassifier/
-
-https://medium.com/all-things-ai/in-depth-parameter-tuning-for-random-forest-d67bb7e920d
-    
-https://towardsdatascience.com/hyperparameter-tuning-the-random-forest-in-python-using-scikit-learn-28d2aa77dd74
-
-https://medium.com/@praveen.orvakanti/this-will-help-you-score-95-percentile-in-the-kaggle-titanic-ml-competition-aa2b3fd1b79b
-
-Benchmark accuracy: 0.8
+2. KNN;
+3. Naive Bayes
+4. Random Forest;
+5. Support Vector Machine;
+6. XGBoost;
+7. LightGBM.
