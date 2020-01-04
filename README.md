@@ -28,12 +28,12 @@ Project Organization
 
 # Install lightgbm on macOS system
 ```
-$ brew install cmake<br/>
-$ brew install gcc@7<br/>
-$ git clone --recursive https://github.com/Microsoft/LightGBM ; cd LightGBM<br/>
-$ mkdir build ; cd build<br/>
-$ cmake -DCMAKE_CXX_COMPILER=g++-7 -DCMAKE_C_COMPILER=gcc-7 ..<br/>
-$ make -j<br/>
-$ cp -r LightGBM/python-package/lightgbm python3.7/site-packages/<br/>
-$ cp LightGBM/lib_lightgbm.so python3.7/site-packages/lightgbm/<br/>
+$ brew install cmake
+$ brew install gcc@7
+$ git clone --recursive https://github.com/Microsoft/LightGBM ; cd LightGBM
+$ mkdir build ; cd build
+$ cmake -DCMAKE_CXX_COMPILER=g++-7 -DCMAKE_C_COMPILER=gcc-7 ..
+$ make -j
+$ cp -r LightGBM/python-package/lightgbm python3.7/site-packages/
+$ cp LightGBM/lib_lightgbm.so python3.7/site-packages/lightgbm/
 ```
