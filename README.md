@@ -26,6 +26,14 @@ Project Organization
 
 --------
 
+# Install and start Jupyter Lab
+```
+$ sudo -H pip3 uninstall -y jupyterlab && sudo -H pip3 install jupyterlab
+$ jupyter-lab
+```
+Follow the guidelines on https://plot.ly/python/getting-started/ to install extensions for the use of plotly with Jupyter Lab.
+
+
 # Install lightgbm on macOS system
 ```
 $ brew install cmake
